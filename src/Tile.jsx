@@ -7,6 +7,7 @@ import { tileProps } from './shared/propTypes';
 const Tile = ({
   activeStartDate,
   children,
+  component: Component,
   classes,
   date,
   dateTime,
@@ -21,29 +22,45 @@ const Tile = ({
   tileContent,
   tileDisabled,
   view,
-}) => (
-  <button
-    className={mergeClassNames(
-      classes,
-      tileClassName instanceof Function ? tileClassName({ date, view }) : tileClassName,
-    )}
-    disabled={
-      (minDate && minDateTransform(minDate) > date)
-      || (maxDate && maxDateTransform(maxDate) < date)
-      || (tileDisabled && tileDisabled({ activeStartDate, date, view }))
-    }
-    onClick={onClick && (() => onClick(date))}
-    onMouseOver={onMouseOver && (() => onMouseOver(date))}
-    onFocus={onMouseOver && (() => onMouseOver(date))}
-    style={style}
-    type="button"
-  >
-    <time dateTime={dateTime}>
-      {children}
-    </time>
-    {typeof tileContent === 'function' ? tileContent({ date, view }) : tileContent}
-  </button>
-);
+}) => {
+  const disabled = (minDate && minDateTransform(minDate) > date)
+    || (maxDate && maxDateTransform(maxDate) < date)
+    || (tileDisabled && tileDisabled({ activeStartDate, date, view }));
+
+  let addProps;
+  if (Component === 'div') {
+    addProps = {
+      role: 'button',
+      onKeyPress: disabled ? undefined : onClick && (() => onClick(date)),
+    };
+  } else {
+    addProps = {
+      type: 'button',
+    };
+  }
+
+  return (
+    <Component
+      role="button"
+      className={mergeClassNames(
+        classes,
+        tileClassName instanceof Function ? tileClassName({ date, view }) : tileClassName,
+        `react-calendar__tile--${disabled ? 'disabled' : 'enabled'}`,
+      )}
+      disabled={disabled}
+      onClick={disabled ? undefined : onClick && (() => onClick(date))}
+      onMouseOver={onMouseOver && (() => onMouseOver(date))}
+      onFocus={onMouseOver && (() => onMouseOver(date))}
+      style={style}
+      {...addProps}
+    >
+      <time dateTime={dateTime}>
+        {children}
+      </time>
+      {typeof tileContent === 'function' ? tileContent({ date, view }) : tileContent}
+    </Component>
+  );
+};
 
 Tile.propTypes = {
   ...tileProps,

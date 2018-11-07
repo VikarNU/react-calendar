@@ -12,11 +12,13 @@
     box-sizing: border-box;
   }
 
+  [role="button"],
   button {
     margin: 0;
     border: 0;
     outline: none;
 
+    &.react-calendar__tile--enabled,
     &:enabled {
       &:hover {
         cursor: pointer;
@@ -28,16 +30,19 @@
     height: 44px;
     margin-bottom: 1em;
 
+    [role="button"],
     button {
       min-width: 44px;
       background: none;
 
+      &.react-calendar__tile--enabled,
       &:enabled {
         &:hover, &:focus {
           background-color: rgb(230, 230, 230);
         }
       }
 
+      &.react-calendar__tile--disabled,
       &[disabled] {
         background-color: rgb(240, 240, 240);
       }
@@ -95,10 +100,12 @@
     padding: .75em .5em;
     background: none;
 
+    &.react-calendar__tile--disabled,
     &:disabled {
       background-color: rgb(240, 240, 240);
     }
 
+    &.react-calendar__tile--enabled,
     &:enabled {
       &:hover, &:focus {
         background-color: rgb(230, 230, 230);
@@ -109,6 +116,7 @@
       @bgcolor: lighten(rgb(0, 110, 220), 30%);
       background: @bgcolor;
 
+      &.react-calendar__tile--enabled,
       &:enabled {
         &:hover, &:focus {
           background: lighten(@bgcolor, 10%);
@@ -121,6 +129,7 @@
       background: @bgcolor;
       color: white;
 
+      &.react-calendar__tile--enabled,
       &:enabled {
         &:hover, &:focus {
           background: lighten(@bgcolor, 10%);
