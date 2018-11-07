@@ -41,7 +41,6 @@ const Tile = ({
 
   return (
     <Component
-      role="button"
       className={mergeClassNames(
         classes,
         tileClassName instanceof Function ? tileClassName({ date, view }) : tileClassName,
